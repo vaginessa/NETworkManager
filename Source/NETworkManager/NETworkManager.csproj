@@ -114,10 +114,12 @@
       <HintPath>C:\Program Files (x86)\Windows Kits\10\UnionMetadata\Facade\Windows.WinMD</HintPath>
     </Reference>
     <Reference Include="Windows.Foundation" />
-    <Reference Include="Windows.Foundation.FoundationContract">
+    <Reference Include="Windows.Foundation.FoundationContract, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Windows Kits\10\References\Windows.Foundation.FoundationContract\1.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
     </Reference>
-    <Reference Include="Windows.Foundation.UniversalApiContract">
+    <Reference Include="Windows.Foundation.UniversalApiContract, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Windows Kits\10\References\Windows.Foundation.UniversalApiContract\1.0.0.0\Windows.Foundation.UniversalApiContract.winmd</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
