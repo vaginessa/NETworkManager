@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
@@ -22,8 +24,8 @@ namespace NETworkManager.Models.Network
             }
         }
 
-        private DeviceInformationCollection _wiFiAdapters;
-        public DeviceInformationCollection WiFiAdapters
+        private List<DeviceInformation> _wiFiAdapters;
+        public List<DeviceInformation> WiFiAdapters
         {
             get { return _wiFiAdapters; }
             set
@@ -55,13 +57,12 @@ namespace NETworkManager.Models.Network
         #region Constructor
         public WiFiScanner()
         {
-            Initialize();
+            
         }
         #endregion
 
-
         #region Methods
-        private async void Initialize()
+        public async Task TryGetAccess()
         {
             WiFiAccessStatus wiFiAccessStatus = await WiFiAdapter.RequestAccessAsync();
 
@@ -69,9 +70,9 @@ namespace NETworkManager.Models.Network
                 throw new WiFiScannerAccessDeniedException();
         }
 
-        public async void FindAdapters()
+        public async Task FindAdapters()
         {
-            WiFiAdapters = await DeviceInformation.FindAllAsync(WiFiAdapter.GetDeviceSelector());
+            WiFiAdapters = (await DeviceInformation.FindAllAsync(WiFiAdapter.GetDeviceSelector())).ToList();
         }
 
         public async void SetAdpater(string id = null)
@@ -82,21 +83,24 @@ namespace NETworkManager.Models.Network
             WiFiAdapter = await WiFiAdapter.FromIdAsync(id == null ? WiFiAdapters.First().Id : WiFiAdapters.First(x => x.Id == id).Id);
         }
 
-        public async Task Scan()
+        public void ScanAsync()
         {
-            if (WiFiAdapter == null)
-                throw new Exception("No adapter selected");
-
-            // Do a scan
-            await WiFiAdapter.ScanAsync();
-
-            // Process the result
-            foreach(WiFiAvailableNetwork network in WiFiAdapter.NetworkReport.AvailableNetworks)
+            Task.Run(async () =>
             {
-                OnWiFiNetworkFound(new WiFiScannerWiFiNetworkFoundArgs(network.Bssid, network.Ssid, network.SignalBars, network.ChannelCenterFrequencyInKilohertz, network.NetworkKind, network.PhyKind));
-            }
+                if (WiFiAdapter == null)
+                    throw new Exception("No adapter selected");
 
-            OnComplete();
+                // Do a scan
+                await WiFiAdapter.ScanAsync();
+
+                // Process the result
+                foreach (WiFiAvailableNetwork network in WiFiAdapter.NetworkReport.AvailableNetworks)
+                {
+                    OnWiFiNetworkFound(new WiFiScannerWiFiNetworkFoundArgs(network.Bssid, network.Ssid, network.SignalBars, network.ChannelCenterFrequencyInKilohertz, network.NetworkKind, network.PhyKind));
+                }
+
+                OnComplete();
+            });
         }
         #endregion
     }

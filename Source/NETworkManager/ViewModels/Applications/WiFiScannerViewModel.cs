@@ -2,12 +2,16 @@
 using System;
 using System.Windows.Threading;
 using System.Diagnostics;
+using NETworkManager.Models.Network;
+using System.Linq;
+using System.Windows;
 
 namespace NETworkManager.ViewModels.Applications
 {
     public class WiFiScannerViewModel : ViewModelBase
     {
         #region Variables
+        WiFiScanner wiFiScanner;
         DispatcherTimer dispatcherTimer = new DispatcherTimer();
         Stopwatch stopwatch = new Stopwatch();
 
@@ -101,13 +105,42 @@ namespace NETworkManager.ViewModels.Applications
         #region Constructor, load settings, shutdown
         public WiFiScannerViewModel()
         {
+            InitWifi();
+
+            // wiFiScanner.ScanAsync();
+
             LoadSettings();
 
             _isLoading = false;
         }
 
+        private async void InitWifi()
+        {
+            wiFiScanner = new WiFiScanner();
+
+            // Get access
+            try
+            {
+                await wiFiScanner.TryGetAccess();
+            }
+            catch (WiFiScannerAccessDeniedException)
+            {
+
+                return;
+            }
+
+
+            await wiFiScanner.FindAdapters();
+
+            foreach (var x in wiFiScanner.WiFiAdapters)
+            {
+                
+            }
+        }
+
         private void LoadSettings()
         {
+
         }
         #endregion
 
@@ -137,7 +170,7 @@ namespace NETworkManager.ViewModels.Applications
             dispatcherTimer.Start();
             EndTime = null;
 
-            
+
 
 
         }
@@ -153,7 +186,7 @@ namespace NETworkManager.ViewModels.Applications
             EndTime = DateTime.Now;
 
             stopwatch.Reset();
-            
+
             IsScanRunning = false;
         }
         #endregion
