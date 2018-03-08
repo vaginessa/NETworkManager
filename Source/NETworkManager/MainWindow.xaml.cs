@@ -312,61 +312,6 @@ namespace NETworkManager
             // Chech for updates...
             if (SettingsManager.Current.Update_CheckForUpdatesAtStartup)
                 CheckForUpdates();
-
-            Test();
-        }
-
-        public WiFiAdapter WiFiAdapter { get; private set; }
-
-        private void Test()
-        {
-            TestAsync();
-        }
-
-        private async void TestAsync()
-        {
-            await InitializeFirstAdapter();
-            await ScanForNetworks();
-        }
-
-        private async Task InitializeFirstAdapter()
-        {
-            var access = await WiFiAdapter.RequestAccessAsync();
-            if (access != WiFiAccessStatus.Allowed)
-            {
-                throw new Exception("WiFiAccessStatus not allowed");
-            }
-            else
-            {
-                var wifiAdapterResults = await DeviceInformation.FindAllAsync(WiFiAdapter.GetDeviceSelector());
-
-                if (wifiAdapterResults.Count >= 1)
-                    WiFiAdapter = await WiFiAdapter.FromIdAsync(wifiAdapterResults[0].Id);
-                else
-                    throw new Exception("WiFi Adapter not found.");
-            }
-        }
-
-        public async Task ScanForNetworks()
-        {
-            if (WiFiAdapter != null)
-            {
-                await WiFiAdapter.ScanAsync();
-
-                foreach (var availableNetwork in WiFiAdapter.NetworkReport.AvailableNetworks)
-                {
-                    System.Windows.MessageBox.Show(availableNetwork.Ssid);
-                    
-                    /*    MacAddress = availableNetwork.Bssid,
-                        Ssid = availableNetwork.Ssid,
-                        SignalBars = availableNetwork.SignalBars,
-                        ChannelCenterFrequencyInKilohertz =
-                        availableNetwork.ChannelCenterFrequencyInKilohertz,
-                        NetworkKind = availableNetwork.NetworkKind.ToString(),
-                        PhysicalKind = availableNetwork.PhyKind.ToString()
-                    */
-                }
-            }
         }
 
         private void LoadApplicationList()

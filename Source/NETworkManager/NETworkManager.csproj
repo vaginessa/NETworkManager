@@ -224,6 +224,9 @@
     <Compile Include="Models\Network\HTTPHeadersOptions.cs" />
     <Compile Include="Models\Network\HTTPHeaders.cs" />
     <Compile Include="Models\Network\ARPTableInfo.cs" />
+    <Compile Include="Models\Network\WiFiScannerWiFiNetworkFoundArgs.cs" />
+    <Compile Include="Models\Network\WiFiScannerAccessDeniedException.cs" />
+    <Compile Include="Models\Network\WiFiScanner.cs" />
     <Compile Include="Models\Network\SNMPOptions.cs" />
     <Compile Include="Models\Network\SNMPReceivedInfo.cs" />
     <Compile Include="Models\Network\SNMPReceivedArgs.cs" />
