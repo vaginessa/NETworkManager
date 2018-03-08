@@ -247,6 +247,7 @@
     <Compile Include="Validators\MultipleHostsValidator.cs" />
     <Compile Include="Validators\HttpAndHttpsUriValidator.cs" />
     <Compile Include="Validators\SubnetCalculatorSubnetValidator.cs" />
+    <Compile Include="ViewModels\Applications\WiFiScannerViewModel.cs" />
     <Compile Include="ViewModels\Applications\PingHostViewModel.cs" />
     <Compile Include="ViewModels\Applications\SNMPViewModel.cs" />
     <Compile Include="ViewModels\Applications\HTTPHeadersViewModel.cs" />
@@ -292,6 +293,9 @@
       <DependentUpon>RemoteDesktopControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Settings\SettingsGeneralUpdateViewModel.cs" />
+    <Compile Include="Views\Applications\WiFiScannerView.xaml.cs">
+      <DependentUpon>WiFiScannerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Applications\PingHostView.xaml.cs">
       <DependentUpon>PingHostView.xaml</DependentUpon>
     </Compile>
@@ -496,6 +500,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Include="Views\Applications\WiFiScannerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Applications\PingHostView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

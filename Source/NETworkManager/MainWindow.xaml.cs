@@ -23,10 +23,6 @@ using NETworkManager.Helpers;
 using System.Runtime.CompilerServices;
 using System.Windows.Markup;
 using NETworkManager.Models.Update;
-using NETworkManager.Models.RemoteDesktop;
-using Windows.Devices.WiFi;
-using System.Threading.Tasks;
-using Windows.Devices.Enumeration;
 
 namespace NETworkManager
 {
@@ -411,6 +407,7 @@ namespace NETworkManager
         TracerouteView tracerouteView;
         DNSLookupView dnsLookupView;
         RemoteDesktopView remoteDesktopView;
+        WiFiScannerView wiFiScannerView;
         SNMPView snmpView;
         WakeOnLANView wakeOnLANView;
         SubnetCalculatorHostView subnetCalculatorHostView;
@@ -468,6 +465,12 @@ namespace NETworkManager
                         remoteDesktopView = new RemoteDesktopView();
 
                     contentControlApplication.Content = remoteDesktopView;
+                    break;
+                case ApplicationViewManager.Name.WiFiScanner:
+                    if (wiFiScannerView == null)
+                        wiFiScannerView = new WiFiScannerView();
+
+                    contentControlApplication.Content = wiFiScannerView;
                     break;
                 case ApplicationViewManager.Name.SNMP:
                     if (snmpView == null)

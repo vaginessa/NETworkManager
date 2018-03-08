@@ -528,6 +528,7 @@
     <system:String x:Key="String_ApplicationName_HTTPHeaders">HTTP Headers</system:String>
     <system:String x:Key="String_ApplicationName_ARPTable">ARP Table</system:String>
     <system:String x:Key="String_ApplicationName_Lookup">Lookup</system:String>
+    <system:String x:Key="String_ApplicationName_WiFiScanner">WiFi Scanner</system:String>
     
     <!-- SettingsView.Name -->
     <system:String x:Key="String_SettingsName_General">General</system:String>
