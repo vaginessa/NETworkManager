@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
@@ -8,7 +7,7 @@ using Windows.Devices.WiFi;
 
 namespace NETworkManager.Models.Network
 {
-    public class WiFiScanner
+    public class WiFiNetwork
     {
         #region Variables
         private WiFiAdapter _wiFiAdapter;
@@ -39,9 +38,9 @@ namespace NETworkManager.Models.Network
         #endregion
 
         #region Events
-        public event EventHandler<WiFiScannerWiFiNetworkFoundArgs> WiFiNetworkFound;
+        public event EventHandler<WiFiNetworkFoundArgs> WiFiNetworkFound;
 
-        protected virtual void OnWiFiNetworkFound(WiFiScannerWiFiNetworkFoundArgs e)
+        protected virtual void OnWiFiNetworkFound(WiFiNetworkFoundArgs e)
         {
             WiFiNetworkFound?.Invoke(this, e);
         }
@@ -55,7 +54,7 @@ namespace NETworkManager.Models.Network
         #endregion
 
         #region Constructor
-        public WiFiScanner()
+        public WiFiNetwork()
         {
             
         }
@@ -67,7 +66,7 @@ namespace NETworkManager.Models.Network
             WiFiAccessStatus wiFiAccessStatus = await WiFiAdapter.RequestAccessAsync();
 
             if (wiFiAccessStatus != WiFiAccessStatus.Allowed)
-                throw new WiFiScannerAccessDeniedException();
+                throw new WiFiAdapterAccessDeniedException();
         }
 
         public async Task FindAdapters()
@@ -96,7 +95,7 @@ namespace NETworkManager.Models.Network
                 // Process the result
                 foreach (WiFiAvailableNetwork network in WiFiAdapter.NetworkReport.AvailableNetworks)
                 {
-                    OnWiFiNetworkFound(new WiFiScannerWiFiNetworkFoundArgs(network.Bssid, network.Ssid, network.SignalBars, network.ChannelCenterFrequencyInKilohertz, network.NetworkKind, network.PhyKind));
+                    OnWiFiNetworkFound(new WiFiNetworkFoundArgs(network.Bssid, network.Ssid, network.SignalBars, network.ChannelCenterFrequencyInKilohertz, network.NetworkKind, network.PhyKind));
                 }
 
                 OnComplete();

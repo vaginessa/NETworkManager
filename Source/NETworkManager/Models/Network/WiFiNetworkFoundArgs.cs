@@ -2,7 +2,7 @@
 
 namespace NETworkManager.Models.Network
 {
-    public class WiFiScannerWiFiNetworkFoundArgs : System.EventArgs
+    public class WiFiNetworkFoundArgs : System.EventArgs
     {
         public string MACAddress { get; set; }
         public string SSID { get; set; }
@@ -11,12 +11,12 @@ namespace NETworkManager.Models.Network
         public WiFiNetworkKind NetworkKind { get; set; }
         public WiFiPhyKind PhyKind { get; set; }
 
-        public WiFiScannerWiFiNetworkFoundArgs()
+        public WiFiNetworkFoundArgs()
         {
 
         }
 
-        public WiFiScannerWiFiNetworkFoundArgs(string macAddress, string ssid, byte signal, int channelCenterFrequencyInKilohertz, WiFiNetworkKind networkKind, WiFiPhyKind phyKind)
+        public WiFiNetworkFoundArgs(string macAddress, string ssid, byte signal, int channelCenterFrequencyInKilohertz, WiFiNetworkKind networkKind, WiFiPhyKind phyKind)
         {
             MACAddress = macAddress;
             SSID = ssid;

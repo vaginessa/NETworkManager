@@ -103,6 +103,7 @@
     <system:String x:Key="String_Header_Network">Netzwerk</system:String>
     <system:String x:Key="String_Header_Data">Daten</system:String>
     <system:String x:Key="String_Header_IPScanner">IP-Scanner</system:String>
+    <system:String x:Key="String_Header_AvailableWiFiNetworks">Verfügbare WLAN-Netzwerke</system:String>
 
     <!-- Normal strings -->
     <system:String x:Key="String_ProductName">NETworkManager</system:String>

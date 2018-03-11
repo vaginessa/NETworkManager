@@ -13,9 +13,154 @@
         Dialog:DialogParticipation.Register="{Binding}"
         mc:Ignorable="d">
     <UserControl.Resources>
-       
+        <Converter:BooleanReverseConverter x:Key="BooleanReverseConverter" />
+        <Converter:BooleanReverseToVisibilityConverter x:Key="BooleanReverseToVisibilityConverter" />
+        <Converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Style x:Key="ReloadAnimation" TargetType="Rectangle">
+            <Setter Property="Height" Value="24" />
+            <Setter Property="Image.RenderTransform">
+                <Setter.Value>
+                    <RotateTransform CenterX="12" CenterY="12" />
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Angle" From="0" To="720" Duration="0:0:2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
-    <Grid>
-        
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Style="{StaticResource HeaderTextBlock}" Text="{DynamicResource String_Header_Interface}" />
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Column="0" x:Name="cbNetworkInterfaceProfiles" Grid.Row="1" ItemsSource="{Binding WiFiAdaptersView}" SelectedItem="{Binding SelectedWiFiAdapter}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="24" Height="24">
+                                <Rectangle.Resources>
+                                    <VisualBrush x:Key="VisualUp" Stretch="Uniform" Visual="{IconPacks:Material Kind=Wifi}"/>
+                                </Rectangle.Resources>
+                                <Rectangle.Style>
+                                    <Style TargetType="{x:Type Rectangle}">
+                                        <Setter Property="OpacityMask" Value="{StaticResource VisualUp}" />
+                                        <Setter Property="Fill" Value="{DynamicResource GrayBrush3}" />
+                                    </Style>
+                                </Rectangle.Style>
+                            </Rectangle>
+                            <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Path=Name}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource MetroComboBoxItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ComboBoxItem">
+                                    <Grid Background="{TemplateBinding Background}" RenderOptions.ClearTypeHint="{TemplateBinding RenderOptions.ClearTypeHint}">
+                                        <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        <Grid Margin="{TemplateBinding BorderThickness}">
+                                            <ContentPresenter x:Name="contentPresenter" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        </Grid>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}" />
+                                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource GrayBrush9}" />
+                                        </Trigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsSelected" Value="False" />
+                                                <Condition Property="IsMouseOver" Value="True" />
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource GrayBrush10}" />
+                                        </MultiTrigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter TargetName="contentPresenter" Property="Opacity" Value=".55" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+            <Button Grid.Column="1" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" Height="{Binding ElementName=cbNetworkInterfaceProfiles, Path=ActualHeight}" Command="{Binding ReloadNetworkInterfacesCommand}" Style="{StaticResource CleanButton}" IsEnabled="{Binding IsNetworkInterfaceLoading, Converter={StaticResource BooleanReverseConverter}}" Margin="10,0,0,0">
+                <Rectangle Width="24" Height="24">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Uniform" Visual="{IconPacks:Material Kind=Refresh}" />
+                    </Rectangle.OpacityMask>
+                    <Rectangle.Style>
+                        <Style TargetType="{x:Type Rectangle}" BasedOn="{StaticResource ReloadAnimation}">
+                            <Setter Property="Fill" Value="{DynamicResource GrayBrush3}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}, Path=IsMouseOver}" Value="True">
+                                    <Setter Property="Fill" Value="{DynamicResource GrayBrush5}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+            </Button>
+        </Grid>
+        <TextBlock Grid.Row="2" Style="{StaticResource HeaderTextBlock}" Text="{DynamicResource String_Header_AvailableWiFiNetworks}" />
+        <DataGrid x:Name="dataGridWiFiNetworks" Grid.Row="3" ItemsSource="{Binding WiFiNetworksView}" Margin="0,0,0,10">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource DataGridScrollBar}" />
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{DynamicResource String_MACAddress}" Binding="{Binding MACAddress}" MinWidth="150" />
+                <DataGridTextColumn Header="{DynamicResource String_SSID}" Binding="{Binding SSID}" MinWidth="80" />
+                <DataGridTemplateColumn Header="{DynamicResource String_Signal}" MinWidth="150" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Rectangle Width="20" Height="20" Fill="{DynamicResource GrayBrush3}" Margin="10,5,0,5">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Uniform" Visual="{IconPacks:Material Kind=Play}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>                
+                <DataGridTextColumn Header="{DynamicResource String_Frequency}" Binding="{Binding ChannelCenterFrequencyInKilohertz}" MinWidth="80" />
+                <DataGridTextColumn Header="{DynamicResource String_NetworkKind}" Binding="{Binding NetworkKind}" MinWidth="150" />
+                <DataGridTextColumn Header="{DynamicResource String_PhyKind}" Binding="{Binding PhyKind}" MinWidth="150" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Grid.Row="4" HorizontalAlignment="Right" Command="{Binding ScanCommand}" Style="{StaticResource ImageWithTextButton}" IsEnabled="{Binding IsRefreshing, Converter={StaticResource BooleanReverseConverter}}">
+            <Button.Content>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Rectangle Width="20" Height="20" Fill="{DynamicResource GrayBrush3}" Margin="10,5,0,5">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Uniform" Visual="{IconPacks:Material Kind=Play}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Grid.Column="1" Text="{DynamicResource String_Button_Scan}" Style="{StaticResource DefaultTextBlock}" TextAlignment="Center" Margin="10,5" />
+                </Grid>
+            </Button.Content>
+        </Button>
     </Grid>
 </UserControl>

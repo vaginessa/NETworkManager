@@ -3,7 +3,11 @@ using System;
 using System.Windows.Threading;
 using System.Diagnostics;
 using NETworkManager.Models.Network;
-using System.Linq;
+using System.ComponentModel;
+using System.Windows.Data;
+using Windows.Devices.Enumeration;
+using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace NETworkManager.ViewModels.Applications
@@ -11,11 +15,55 @@ namespace NETworkManager.ViewModels.Applications
     public class WiFiScannerViewModel : ViewModelBase
     {
         #region Variables
-        WiFiScanner wiFiScanner;
+        WiFiNetwork wiFiNetwork;
+
         DispatcherTimer dispatcherTimer = new DispatcherTimer();
         Stopwatch stopwatch = new Stopwatch();
 
         private bool _isLoading = true;
+
+        private ICollectionView _wiFiAdaptersView;
+        public ICollectionView WiFiAdaptersView
+        {
+            get { return _wiFiAdaptersView; }
+        }
+
+        private DeviceInformation _selectedWiFiAdapter;
+        public DeviceInformation SelectedWiFiAdapter
+        {
+            get { return _selectedWiFiAdapter; }
+            set
+            {
+                if (value == _selectedWiFiAdapter)
+                    return;
+
+                if (value != null)
+                    wiFiNetwork.SetAdpater(value.Id);
+
+                _selectedWiFiAdapter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<WiFiNetworkInfo> _wiFiNetworks = new ObservableCollection<WiFiNetworkInfo>();
+        public ObservableCollection<WiFiNetworkInfo> WiFiNetworks
+        {
+            get { return _wiFiNetworks; }
+            set
+            {
+                if (value == _wiFiNetworks)
+                    return;
+
+                _wiFiNetworks = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ICollectionView _wiFiNetworksView;
+        public ICollectionView WiFiNetworksView
+        {
+            get { return _wiFiNetworksView; }
+        }
 
         private bool _isScanRunning;
         public bool IsScanRunning
@@ -105,37 +153,13 @@ namespace NETworkManager.ViewModels.Applications
         #region Constructor, load settings, shutdown
         public WiFiScannerViewModel()
         {
-            InitWifi();
+            InitializeWiFi();
 
-            // wiFiScanner.ScanAsync();
+            _wiFiNetworksView = CollectionViewSource.GetDefaultView(WiFiNetworks);
 
             LoadSettings();
 
             _isLoading = false;
-        }
-
-        private async void InitWifi()
-        {
-            wiFiScanner = new WiFiScanner();
-
-            // Get access
-            try
-            {
-                await wiFiScanner.TryGetAccess();
-            }
-            catch (WiFiScannerAccessDeniedException)
-            {
-
-                return;
-            }
-
-
-            await wiFiScanner.FindAdapters();
-
-            foreach (var x in wiFiScanner.WiFiAdapters)
-            {
-                
-            }
         }
 
         private void LoadSettings()
@@ -157,7 +181,27 @@ namespace NETworkManager.ViewModels.Applications
         #endregion
 
         #region Methods
-        private async void Scan()
+        private async void InitializeWiFi()
+        {
+            wiFiNetwork = new WiFiNetwork();
+
+            // Get access
+            try
+            {
+                await wiFiNetwork.TryGetAccess();
+            }
+            catch (WiFiAdapterAccessDeniedException)
+            {
+                throw;
+            }
+
+            await wiFiNetwork.FindAdapters();
+
+            // Set the collection view source
+            _wiFiAdaptersView = CollectionViewSource.GetDefaultView(wiFiNetwork.WiFiAdapters);
+        }
+
+        private void Scan()
         {
             DisplayStatusMessage = false;
             IsScanRunning = true;
@@ -170,11 +214,15 @@ namespace NETworkManager.ViewModels.Applications
             dispatcherTimer.Start();
             EndTime = null;
 
+            WiFiNetworks.Clear();
 
+            Debug.WriteLine("Scan");
 
+            wiFiNetwork.WiFiNetworkFound += WiFiScanner_WiFiNetworkFound;
+            wiFiNetwork.Complete += WiFiScanner_Complete;
 
+            wiFiNetwork.ScanAsync();
         }
-
 
         private void ScanFinished()
         {
@@ -192,7 +240,17 @@ namespace NETworkManager.ViewModels.Applications
         #endregion
 
         #region Events
-        private void IpScanner_ScanComplete(object sender, EventArgs e)
+        private void WiFiScanner_WiFiNetworkFound(object sender, WiFiNetworkFoundArgs e)
+        {
+            WiFiNetworkInfo wiFiNetworkInfo = WiFiNetworkInfo.Parse(e);
+
+            Application.Current.Dispatcher.BeginInvoke(new Action(delegate ()
+            {
+                WiFiNetworks.Add(wiFiNetworkInfo);
+            }));
+        }
+
+        private void WiFiScanner_Complete(object sender, EventArgs e)
         {
             ScanFinished();
         }
