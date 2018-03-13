@@ -56,7 +56,7 @@ namespace NETworkManager.Models.Network
         #region Constructor
         public WiFiNetwork()
         {
-            
+
         }
         #endregion
 
@@ -95,7 +95,7 @@ namespace NETworkManager.Models.Network
                 // Process the result
                 foreach (WiFiAvailableNetwork network in WiFiAdapter.NetworkReport.AvailableNetworks)
                 {
-                    OnWiFiNetworkFound(new WiFiNetworkFoundArgs(network.Bssid, network.Ssid, network.SignalBars, network.ChannelCenterFrequencyInKilohertz, network.NetworkKind, network.PhyKind));
+                    OnWiFiNetworkFound(new WiFiNetworkFoundArgs(network.Bssid, network.Ssid, network.SignalBars, network.SecuritySettings.NetworkAuthenticationType, network.SecuritySettings.NetworkEncryptionType, network.ChannelCenterFrequencyInKilohertz, network.NetworkKind, network.PhyKind));
                 }
 
                 OnComplete();

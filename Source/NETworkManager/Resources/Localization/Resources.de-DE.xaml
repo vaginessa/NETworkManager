@@ -369,6 +369,13 @@
     <system:String x:Key="String_DataHasBeenUpdated">Daten wurden aktualisiert!</system:String>
     <system:String x:Key="String_ErrorInResponseCheckIfYouHaveWritePermissions">Fehler in Antwort! Prüfen Sie, ob Sie Schreibrechte haben.</system:String>
     <system:String x:Key="String_ShowScanResultForAllIPAddresses">Zeige Scan-Ergebnis für alle IP-Adressen</system:String>
+    <system:String x:Key="String_SSID">SSID</system:String>
+    <system:String x:Key="String_Signal">Signal</system:String>
+    <system:String x:Key="String_Frequency">Frequenz</system:String>
+    <system:String x:Key="String_NetworkKind">Netzwerk-Art</system:String>
+    <system:String x:Key="String_PhyKind">Phy-Art</system:String>
+    <system:String x:Key="String_Authentication">Authentifizierung</system:String>
+    <system:String x:Key="String_Encryption">Verschlüsselung</system:String>
     
     <!-- Documentation title -->
     <system:String x:Key="String_DocumentationTitle_00001">Wie installiere ich RDP 8.1 unter Windows 7 / Server 2008 R2?</system:String>

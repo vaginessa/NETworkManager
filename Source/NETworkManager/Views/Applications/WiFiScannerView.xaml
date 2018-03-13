@@ -130,17 +130,9 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{DynamicResource String_MACAddress}" Binding="{Binding MACAddress}" MinWidth="150" />
                 <DataGridTextColumn Header="{DynamicResource String_SSID}" Binding="{Binding SSID}" MinWidth="80" />
-                <DataGridTemplateColumn Header="{DynamicResource String_Signal}" MinWidth="150" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Rectangle Width="20" Height="20" Fill="{DynamicResource GrayBrush3}" Margin="10,5,0,5">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Stretch="Uniform" Visual="{IconPacks:Material Kind=Play}" />
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>                
+                <DataGridTextColumn Header="{DynamicResource String_Signal}" Binding="{Binding Signal}" MinWidth="80" />
+                <DataGridTextColumn Header="{DynamicResource String_Authentication}" Binding="{Binding AuthenticationType}" MinWidth="80" />
+                <DataGridTextColumn Header="{DynamicResource String_Encryption}" Binding="{Binding EncryptionType}" MinWidth="80" />
                 <DataGridTextColumn Header="{DynamicResource String_Frequency}" Binding="{Binding ChannelCenterFrequencyInKilohertz}" MinWidth="80" />
                 <DataGridTextColumn Header="{DynamicResource String_NetworkKind}" Binding="{Binding NetworkKind}" MinWidth="150" />
                 <DataGridTextColumn Header="{DynamicResource String_PhyKind}" Binding="{Binding PhyKind}" MinWidth="150" />

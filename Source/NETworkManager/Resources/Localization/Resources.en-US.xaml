@@ -374,6 +374,8 @@
     <system:String x:Key="String_Frequency">Frequency</system:String>
     <system:String x:Key="String_NetworkKind">Network kind</system:String>
     <system:String x:Key="String_PhyKind">Phy kind</system:String>
+    <system:String x:Key="String_Authentication">Authentication</system:String>
+    <system:String x:Key="String_Encryption">Encryption</system:String>
     
     <!-- Documentation title -->
     <system:String x:Key="String_DocumentationTitle_00001">How to install RDP 8.1 on Windows 7/Server 2008 R2</system:String>
