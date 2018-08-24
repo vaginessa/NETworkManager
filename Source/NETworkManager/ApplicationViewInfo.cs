@@ -1,4 +1,4 @@
-﻿using MahApps.Metro.IconPacks;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace NETworkManager
@@ -14,55 +14,12 @@ namespace NETworkManager
 
         }
 
-        public ApplicationViewInfo(ApplicationViewManager.Name name, Canvas icon)
-        {
-            Name = name;
-            TranslatedName = ApplicationViewManager.GetTranslatedNameByName(name);
-            Icon = icon;
-        }
-
-        public ApplicationViewInfo(ApplicationViewManager.Name name, PackIconModern packIconModern)
+        public ApplicationViewInfo(ApplicationViewManager.Name name, UIElement packIconModern)
         {
             Name = name;
             TranslatedName = ApplicationViewManager.GetTranslatedNameByName(name);
             var canvas = new Canvas();
             canvas.Children.Add(packIconModern);
-            Icon = canvas;
-        }
-
-        public ApplicationViewInfo(ApplicationViewManager.Name name, PackIconMaterial packIconMaterial)
-        {
-            Name = name;
-            TranslatedName = ApplicationViewManager.GetTranslatedNameByName(name);
-            var canvas = new Canvas();
-            canvas.Children.Add(packIconMaterial);
-            Icon = canvas;
-        }
-
-        public ApplicationViewInfo(ApplicationViewManager.Name name, PackIconMaterialLight packIconMaterialLight)
-        {
-            Name = name;
-            TranslatedName = ApplicationViewManager.GetTranslatedNameByName(name);
-            var canvas = new Canvas();
-            canvas.Children.Add(packIconMaterialLight);
-            Icon = canvas;
-        }
-
-        public ApplicationViewInfo(ApplicationViewManager.Name name, PackIconFontAwesome packIconFontAwesome)
-        {
-            Name = name;
-            TranslatedName = ApplicationViewManager.GetTranslatedNameByName(name);
-            var canvas = new Canvas();
-            canvas.Children.Add(packIconFontAwesome);
-            Icon = canvas;
-        }
-
-        public ApplicationViewInfo(ApplicationViewManager.Name name, PackIconOcticons packIconOcticons)
-        {
-            Name = name;
-            TranslatedName = ApplicationViewManager.GetTranslatedNameByName(name);
-            var canvas = new Canvas();
-            canvas.Children.Add(packIconOcticons);
             Icon = canvas;
         }
     }

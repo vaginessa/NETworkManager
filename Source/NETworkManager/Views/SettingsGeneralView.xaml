@@ -6,6 +6,7 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:viewModels="clr-namespace:NETworkManager.ViewModels"
         xmlns:localization="clr-namespace:NETworkManager.Resources.Localization"
+        xmlns:settings="clr-namespace:NETworkManager.Models.Settings"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:SettingsGeneralViewModel}">
     <StackPanel>
         <TextBlock Style="{StaticResource HeaderTextBlock}" Text="{x:Static localization:Strings.DefaultApplication}" />

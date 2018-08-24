@@ -58,6 +58,20 @@ namespace NETworkManager.Models.Settings
             }
         }
 
+        private ObservableCollection<ApplicationViewManager.Name> _general_HiddenApplications = new ObservableCollection<ApplicationViewManager.Name>();
+        public ObservableCollection<ApplicationViewManager.Name> General_HiddenApplications
+        {
+            get => _general_HiddenApplications;
+            set
+            {
+                if (value == _general_HiddenApplications)
+                    return;
+
+                _general_HiddenApplications = value;
+                SettingsChanged = true;
+            }
+        }
+
         // Window
         private bool _window_ConfirmClose;
         public bool Window_ConfirmClose

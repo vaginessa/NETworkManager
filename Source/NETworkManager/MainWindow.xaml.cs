@@ -14,7 +14,6 @@ using NETworkManager.Models.Settings;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using System.Collections.Generic;
-using System.Globalization;
 using NETworkManager.Utilities;
 using System.Runtime.CompilerServices;
 using System.Windows.Markup;
@@ -318,15 +317,18 @@ namespace NETworkManager
             Applications.SortDescriptions.Add(new SortDescription(nameof(ApplicationViewInfo.Name), ListSortDirection.Ascending)); // Always have the same order, even if it is translated...
             Applications.Filter = o =>
             {
-                if (string.IsNullOrEmpty(Search))
-                    return true;
+                if (!(o is ApplicationViewInfo info))
+                    return false;
 
+                if (string.IsNullOrEmpty(Search))
+                    return !SettingsManager.Current.General_HiddenApplications.Contains(info.Name);
+                
                 var regex = new Regex(@" |-");
 
                 var search = regex.Replace(Search, "");
 
                 // Search by TranslatedName and Name
-                return o is ApplicationViewInfo info && (regex.Replace(info.TranslatedName, "").IndexOf(search, StringComparison.OrdinalIgnoreCase) > -1 || regex.Replace(info.Name.ToString(), "").IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0);
+                return !SettingsManager.Current.General_HiddenApplications.Contains(info.Name) && (regex.Replace(info.TranslatedName, "").IndexOf(search, StringComparison.OrdinalIgnoreCase) > -1 || regex.Replace(info.Name.ToString(), "").IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0);
             };
 
             // Get application from settings

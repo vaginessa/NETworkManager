@@ -1,4 +1,5 @@
-﻿using NETworkManager.Models.Settings;
+﻿using System;
+using NETworkManager.Models.Settings;
 using NETworkManager.Utilities;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -60,7 +61,6 @@ namespace NETworkManager.ViewModels
         private void LoadSettings()
         {
             ApplicationViewCollection = new ObservableCollection<ApplicationViewInfo>(ApplicationViewManager.List.OrderBy(x => x.Name));
-
             DefaultApplicationViewSelectedItem = ApplicationViewCollection.FirstOrDefault(x => x.Name == SettingsManager.Current.General_DefaultApplicationViewName);
             HistoryListEntries = SettingsManager.Current.General_HistoryListEntries;
         }

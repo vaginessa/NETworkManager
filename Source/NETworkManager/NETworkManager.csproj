@@ -244,6 +244,7 @@
     <Compile Include="Models\Network\HostNotFoundException.cs" />
     <Compile Include="Models\PuTTY\PuTTYSessionInfo.cs" />
     <Compile Include="Models\PuTTY\PuTTY.cs" />
+    <Compile Include="Models\Settings\ApplicationInfo.cs" />
     <Compile Include="Models\Settings\ProfileInfo.cs" />
     <Compile Include="Models\Settings\ProfileManager.cs" />
     <Compile Include="Resources\Localization\StaticStrings.Designer.cs">
